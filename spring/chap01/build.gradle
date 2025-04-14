@@ -22,7 +22,17 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
+    // compileOnly - 컴파일 시점에서만 동작
+    // implementation - 구현 ~ 컴파일 시점에서 동작
+    
     compileOnly('jakarta.servlet:jakarta.servlet-api:6.0.0')
+
+    // https://mvnrepository.com/artifact/org.eclipse.jetty/glassfish-jstl
+    // implementation 'org.eclipse.jetty:glassfish-jstl:11.0.18'
+    // https://mvnrepository.com/artifact/jakarta.servlet.jsp.jstl/jakarta.servlet.jsp.jstl-api
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+    // https://mvnrepository.com/artifact/org.glassfish.web/jakarta.servlet.jsp.jstl
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.0'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
