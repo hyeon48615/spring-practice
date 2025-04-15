@@ -34,6 +34,21 @@ dependencies {
     // https://mvnrepository.com/artifact/org.glassfish.web/jakarta.servlet.jsp.jstl
     implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.0'
 
+    // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.2.0'
+    testImplementation 'org.mariadb.jdbc:mariadb-java-client:3.2.0'
+
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    implementation 'org.projectlombok:lombok:1.18.38'
+    annotationProcessor 'org.projectlombok:lombok:1.18.38'
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    testImplementation 'org.projectlombok:lombok:1.18.38'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+
+    // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+    implementation 'com.zaxxer:HikariCP:6.0.0'
+    testImplementation 'com.zaxxer:HikariCP:6.0.0'
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
