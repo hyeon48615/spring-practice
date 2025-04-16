@@ -1,10 +1,11 @@
 package net.fullstack10.service;
 
-import net.fullstack10.dao.BbsDAO;
+import lombok.extern.log4j.Log4j2;
 import net.fullstack10.dto.BbsDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+@Log4j2
 public class BbsServiceTests {
     private BbsService service;
 
@@ -26,12 +27,12 @@ public class BbsServiceTests {
 
     @Test
     public void testList() throws Exception {
-        System.out.println(service.list());
+        log.info(service.list());
     }
 
     @Test
     public void testView() throws Exception {
-        System.out.println(service.view(1));
+        log.info(service.view(1));
     }
 
     @Test
@@ -44,13 +45,13 @@ public class BbsServiceTests {
 
         service.modify(dto);
 
-        System.out.println(service.view(1));
+        log.info(service.view(1));
     }
 
     @Test
     public void testDelete() throws Exception {
         service.delete(1);
 
-        System.out.println(service.list());
+        log.info(service.list());
     }
 }

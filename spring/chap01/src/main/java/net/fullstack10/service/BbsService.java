@@ -1,5 +1,6 @@
 package net.fullstack10.service;
 
+import lombok.extern.log4j.Log4j2;
 import net.fullstack10.dao.BbsDAO;
 import net.fullstack10.domain.BbsVO;
 import net.fullstack10.dto.BbsDTO;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Log4j2
 public enum BbsService {
     INSTANCE;
 
@@ -22,8 +24,8 @@ public enum BbsService {
     }
 
     public void regist(BbsDTO dto) throws Exception {
-        System.out.println("====================");
-        System.out.println("BbsService >> regist");
+        log.info("====================");
+        log.info("BbsService >> regist");
 
         // dto -> DAO(vo)
 
@@ -41,10 +43,10 @@ public enum BbsService {
         BbsDAO dao = new BbsDAO();
         dao.insert(vo);
 
-        System.out.println("dto: " + dto);
-        System.out.println("vo: " + vo);
+        log.info("dto: " + dto);
+        log.info("vo: " + vo);
 
-        System.out.println("====================");
+        log.info("====================");
     }
 
     public List<BbsDTO> list() throws Exception {
