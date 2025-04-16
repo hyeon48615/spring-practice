@@ -1,10 +1,10 @@
-package net.fullstack10.bbs.controller;
+package net.fullstack10.controller;
 
-import net.fullstack10.bbs.dto.BbsDTO;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.ServletException;
-import net.fullstack10.bbs.service.BbsService;
+import net.fullstack10.dto.BbsDTO;
+import net.fullstack10.service.BbsService;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,7 +17,12 @@ public class BbsList extends HttpServlet {
         System.out.println("List >> doGet");
         System.out.println("====================");
 
-        List<BbsDTO> bbsList = BbsService.INSTANCE.list();
+        List<BbsDTO> bbsList = null;
+        try {
+            bbsList = BbsService.INSTANCE.list();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         req.setAttribute("bbsList", bbsList);
         req.getRequestDispatcher("/WEB-INF/views/bbs/list.jsp").forward(req, res);

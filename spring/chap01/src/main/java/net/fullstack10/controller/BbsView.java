@@ -1,10 +1,10 @@
-package net.fullstack10.bbs.controller;
+package net.fullstack10.controller;
 
-import net.fullstack10.bbs.dto.BbsDTO;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.ServletException;
-import net.fullstack10.bbs.service.BbsService;
+import net.fullstack10.dto.BbsDTO;
+import net.fullstack10.service.BbsService;
 
 import java.io.IOException;
 
@@ -14,9 +14,14 @@ public class BbsView extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         int idx = (req.getParameter("idx") != null ? Integer.parseInt(req.getParameter("idx")) : 0);
 
-        BbsDTO dto = BbsService.INSTANCE.view(idx);
+        BbsDTO dto = null;
+        try {
+            dto = BbsService.INSTANCE.view(idx);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-
+        req.setAttribute("dto", dto);
         req.getRequestDispatcher("/WEB-INF/views/bbs/view.jsp").forward(req, res);
     }
 

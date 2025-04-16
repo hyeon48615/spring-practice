@@ -1,4 +1,4 @@
-package net.fullstack10.login;
+package net.fullstack10.chap01.login;
 
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;

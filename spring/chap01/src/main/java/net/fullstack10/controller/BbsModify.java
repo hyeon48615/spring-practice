@@ -1,4 +1,4 @@
-package net.fullstack10.bbs.controller;
+package net.fullstack10.controller;
 
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;

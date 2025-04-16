@@ -1,4 +1,4 @@
-package net.fullstack10.bbs.controller;
+package net.fullstack10.controller;
 
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;
@@ -6,11 +6,11 @@ import jakarta.servlet.ServletException;
 
 import java.io.IOException;
 
-@WebServlet(name = "/BbsRegist", value = "/net/fullstack10/regist.do")
-public class BbsRegist extends HttpServlet {
+@WebServlet(name = "/BbsDelete", value = "/net/fullstack10/delete.do")
+public class BbsDelete extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/bbs/regist.jsp").forward(req, res);
+        req.getRequestDispatcher("/WEB-INF/views/bbs/delete.jsp").forward(req, res);
     }
 
     @Override

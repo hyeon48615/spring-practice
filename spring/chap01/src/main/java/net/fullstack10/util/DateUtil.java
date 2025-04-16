@@ -1,4 +1,4 @@
-package net.fullstack10.dao;
+package net.fullstack10.util;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

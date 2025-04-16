@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 public class BbsDAOTests {
-    private BbsDAO BbsDAO;
+    private BbsDAO dao;
 
     @BeforeEach
     public void ready() {
-        BbsDAO = new BbsDAO();
+        dao = new BbsDAO();
     }
 
     @Test
@@ -22,19 +22,19 @@ public class BbsDAOTests {
                 .content("content1")
                 .build();
 
-        BbsDAO.insert(vo);
+        dao.insert(vo);
     }
 
     @Test
     public void testSelectAll() throws Exception {
-        List<BbsVO> list = BbsDAO.selectAll();
+        List<BbsVO> list = dao.selectAll();
 
         list.forEach(vo -> System.out.println(vo));
     }
 
     @Test
     public void testSelectByIdx() throws Exception {
-        BbsVO vo = BbsDAO.selectByidx(1);
+        BbsVO vo = dao.selectByidx(1);
 
         System.out.println(vo);
     }
@@ -47,15 +47,15 @@ public class BbsDAOTests {
                 .content("content1")
                 .build();
 
-        BbsDAO.update(vo);
+        dao.update(vo);
 
-        System.out.println(BbsDAO.selectByidx(1));
+        System.out.println(dao.selectByidx(1));
     }
 
     @Test
     public void testDelete() throws Exception {
-        BbsDAO.delete(1);
+        dao.delete(1);
 
-        System.out.println(BbsDAO.selectAll());
+        System.out.println(dao.selectAll());
     }
 }
