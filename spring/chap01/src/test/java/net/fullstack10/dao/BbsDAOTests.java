@@ -31,4 +31,31 @@ public class BbsDAOTests {
 
         list.forEach(vo -> System.out.println(vo));
     }
+
+    @Test
+    public void testSelectByIdx() throws Exception {
+        BbsVO vo = BbsDAO.selectByidx(1);
+
+        System.out.println(vo);
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+        BbsVO vo = BbsVO.builder()
+                .idx(1)
+                .title("title1 수정")
+                .content("content1")
+                .build();
+
+        BbsDAO.update(vo);
+
+        System.out.println(BbsDAO.selectByidx(1));
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+        BbsDAO.delete(1);
+
+        System.out.println(BbsDAO.selectAll());
+    }
 }
