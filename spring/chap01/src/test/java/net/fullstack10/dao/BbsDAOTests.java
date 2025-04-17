@@ -4,6 +4,7 @@ import net.fullstack10.domain.BbsVO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class BbsDAOTests {
@@ -27,7 +28,7 @@ public class BbsDAOTests {
 
     @Test
     public void testSelectAll() throws Exception {
-        List<BbsVO> list = dao.selectAll();
+        List<BbsVO> list = dao.selectAll(new HashMap<>());
 
         list.forEach(vo -> System.out.println(vo));
     }
@@ -56,6 +57,6 @@ public class BbsDAOTests {
     public void testDelete() throws Exception {
         dao.delete(1);
 
-        System.out.println(dao.selectAll());
+        System.out.println(dao.selectAll(new HashMap<>()));
     }
 }

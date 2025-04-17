@@ -9,8 +9,40 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BbsDAO {
+
+    public int getTotalCount(Map<String, String> map) throws Exception {
+        int result = 0;
+        List<String> params = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append( "select count(*) from tbl_bbs ");
+        sql.append(" where 1=1 ");
+
+        BbsQueryHelper.addDateFilter(sql, params, map.get("search_date1"), map.get("search_date2"));
+        BbsQueryHelper.addCategoryFilter(sql, params, map.get("search_category"), map.get("search_word"));
+        BbsQueryHelper.addOrderByFilter(sql, map.get("order_column"), map.get("order_direction"));
+        BbsQueryHelper.addPageFilter(sql, map.get("page_skip_count"), map.get("page_size"));
+
+        @Cleanup Connection conn = ConnectionUtil.INSTANCE.getConnection();
+        @Cleanup PreparedStatement ps = conn.prepareStatement(sql.toString());
+
+        int index = 1;
+        for (String param : params) {
+            ps.setString(index++, param);
+        }
+
+        @Cleanup ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+
+        return result;
+    }
+
     public void insert(BbsVO vo) throws Exception {
         StringBuilder sql = new StringBuilder();
         sql.append(" insert into tbl_bbs ");
@@ -28,14 +60,28 @@ public class BbsDAO {
         ps.executeUpdate();
     }
 
-    public List<BbsVO> selectAll() throws Exception {
+    public List<BbsVO> selectAll(Map<String, String> map) throws Exception {
+        List<String> params = new ArrayList<>();
+
         StringBuilder sql = new StringBuilder();
         sql.append(" select ");
         sql.append(" idx, title, content, user_id, read_cnt, created_at, updated_at ");
         sql.append(" from tbl_bbs ");
+        sql.append(" where 1=1 ");
+
+        BbsQueryHelper.addDateFilter(sql, params, map.get("search_date1"), map.get("search_date2"));
+        BbsQueryHelper.addCategoryFilter(sql, params, map.get("search_category"), map.get("search_word"));
+        BbsQueryHelper.addOrderByFilter(sql, map.get("order_column"), map.get("order_direction"));
+        BbsQueryHelper.addPageFilter(sql, map.get("page_skip_count"), map.get("page_size"));
 
         @Cleanup Connection conn = ConnectionUtil.INSTANCE.getConnection();
         @Cleanup PreparedStatement ps = conn.prepareStatement(sql.toString());
+
+        int index = 1;
+        for (String param : params) {
+            ps.setString(index++, param);
+        }
+
         @Cleanup ResultSet rs = ps.executeQuery();
 
         List<BbsVO> list = new ArrayList<BbsVO>();
@@ -112,7 +158,6 @@ public class BbsDAO {
         ps.executeUpdate();
     }
 
-    /*
     public void delete(List<Integer> idxList) throws Exception {
         if (idxList == null || idxList.isEmpty()) return;
 
@@ -136,5 +181,4 @@ public class BbsDAO {
 
         ps.executeUpdate();
     }
-    */
 }

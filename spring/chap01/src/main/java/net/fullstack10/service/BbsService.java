@@ -8,6 +8,7 @@ import net.fullstack10.util.MapperUtil;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -23,10 +24,12 @@ public enum BbsService {
         mapperUtil = MapperUtil.INSTANCE;
     }
 
-    public void regist(BbsDTO dto) throws Exception {
-        log.info("====================");
-        log.info("BbsService >> regist");
+    public int totalCount(Map<String, String> map) throws Exception {
+        BbsDAO dao = new BbsDAO();
+        return dao.getTotalCount(map);
+    }
 
+    public void regist(BbsDTO dto) throws Exception {
         // dto -> DAO(vo)
 
 //        BbsVO vo = new BbsVO();
@@ -42,14 +45,9 @@ public enum BbsService {
 
         BbsDAO dao = new BbsDAO();
         dao.insert(vo);
-
-        log.info("dto: " + dto);
-        log.info("vo: " + vo);
-
-        log.info("====================");
     }
 
-    public List<BbsDTO> list() throws Exception {
+    public List<BbsDTO> list(Map<String, String> map) throws Exception {
 //        List<BbsDTO> dtoList = IntStream.range(0, 10).mapToObj(i -> {
 //            BbsDTO dto = new BbsDTO();
 //            dto.setIdx(i);
@@ -60,7 +58,7 @@ public enum BbsService {
 //            return dto;
 //        }).collect(Collectors.toList());
 
-        List<BbsVO> voList = dao.selectAll();
+        List<BbsVO> voList = dao.selectAll(map);
         List<BbsDTO> dtoList = voList.stream()
                 .map(vo -> mapperUtil.get().map(vo, BbsDTO.class))
                 .collect(Collectors.toList());
@@ -82,5 +80,9 @@ public enum BbsService {
 
     public void delete(int idx) throws Exception {
         dao.delete(idx);
+    }
+
+    public void delete(List<Integer> idxList) throws Exception {
+        dao.delete(idxList);
     }
 }

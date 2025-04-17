@@ -12,6 +12,7 @@ public enum ConnectionUtil {
 
     ConnectionUtil() {
         HikariConfig config = new HikariConfig();
+        config.setDriverClassName("org.mariadb.jdbc.Driver");
         config.setJdbcUrl("jdbc:mariadb://localhost:3306/fullstack10");
         config.setUsername("root");
         config.setPassword("1234");

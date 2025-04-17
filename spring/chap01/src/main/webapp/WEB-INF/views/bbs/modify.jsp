@@ -13,49 +13,69 @@
 <body>
     <h1>공지사항 수정</h1>
 
-    <form id="frmModify" name="frmModify" method="post">
+    <form id="frmModify" name="frmModify" method="post" action="./modify.do">
+        <input type="hidden" name="rtnParam" value="${rtnParam}" />
         <table>
             <tr>
                 <td>제목 : </td>
-                <td><input type="text" name="title" id="title" value="" maxlength="30" /></td>
+                <td><input type="text" name="title" id="title" value="${bbs.title}" maxlength="30" /></td>
             </tr>
             <tr>
                 <td>작성자 : </td>
-                <td><input type="text" name="user_id" id="user_id" value="" maxlength="20" /></td>
+                <td><input type="text" name="user_id" id="user_id" value="${bbs.user_id}" maxlength="20" /></td>
             </tr>
             <tr>
                 <td>등록일 : </td>
-                <td><input type="date" name="reg_date" id="reg_date" /></td>
+                <td>${DateUtil.localDateTimeToString(bbs.created_at)}</td>
             </tr>
             <tr>
                 <td>내용 : </td>
-                <td><textarea name="content" id="content" cols="40" rows="6"></textarea></td>
+                <td><textarea name="content" id="content" cols="40" rows="6">${bbs.content}</textarea></td>
             </tr>
             <tr>
                 <td>
                     <input type="button" id="btnModify" value="수정"/>
                     <input type="button" id="btnCancel" value="취소"/>
-                    <input type="button" id="btnList" value="목록"/>
                 </td>
             </tr>
         </table>
     </form>
 
     <script>
-        const btnModify = document.getElementById("btnModify");
-        btnModify.addEventListener('click', (e) => {
+        document.getElementById("btnModify").addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
 
-            location.href = "./modify.do";
+            const frm = document.getElementById("frmModify");
+
+            const title = frm.title.value.trim();
+            const user_id = frm.user_id.value.trim();
+            const content = frm.content.value.trim();
+
+            if (title.length < 1 || title.length > 20) {
+                alert("제목은 1자 이상 20자 이하로 입력해주세요.");
+                frm.title.focus();
+                return;
+            }
+            if (user_id.length < 1 || user_id.length > 20) {
+                alert("작성자는 1자 이상 20자 이하로 입력해주세요.");
+                frm.user_id.focus();
+                return;
+            }
+            if (content.length < 1) {
+                alert("내용은 1자 이상 입력해주세요.");
+                frm.content.focus();
+                return;
+            }
+
+            frm.submit();
         });
 
-        const btnList = document.getElementById("btnList");
-        btnList.addEventListener('click', (e) => {
+        document.getElementById("btnCancel").addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
 
-            location.href = "./list.do";
+            history.back();
         });
     </script>
 </body>

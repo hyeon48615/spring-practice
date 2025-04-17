@@ -5,6 +5,8 @@ import net.fullstack10.dto.BbsDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
 @Log4j2
 public class BbsServiceTests {
     private BbsService service;
@@ -27,7 +29,7 @@ public class BbsServiceTests {
 
     @Test
     public void testList() throws Exception {
-        log.info(service.list());
+        log.info(service.list(new HashMap<>()));
     }
 
     @Test
@@ -52,6 +54,6 @@ public class BbsServiceTests {
     public void testDelete() throws Exception {
         service.delete(1);
 
-        log.info(service.list());
+        log.info(service.list(new HashMap<>()));
     }
 }
