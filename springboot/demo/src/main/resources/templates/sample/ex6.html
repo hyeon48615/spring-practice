@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.utraq.net.nz/tymeleaf/layout"
+      layout:decorate="~{sample/layout/layout6.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>타임리프 - 메인</h1>
+<h2>레이아웃처리</h2>
+<ul>
+    <li>th:block
+        <ul>
+            <li>레이아웃 생성, 특정 페이지를 필요한 부분만 작성 가능</li>
+            <li>추가 레이아웃 라브러리리 필요</li>
+            <li>thymeleaf-layout</li>
+            <li>네임스페이스 추가 -> xmlns:layout=""</li>
+            <li>layout:fragment --> 추후 다른 파일에서 해당 부분만 개발 가능</li>
+            <li>새로운 화면 작성시 layou1 을 그대로 활용하면서 layout:fragment 로 지정된 부분만 원하는 기능으로 개발</li>
+        </ul>
+    </li>
+</ul>
+
+<div id="content" layout:fragment="content">
+    <h3>회원정보</h3>
+    <h4>layout:fragment</h4>
+    <ul>
+        <li th:each="member, status:${lists}" th:text="${member}"></li>
+    </ul>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    const memList = [[${lists}]];
+    document.write(memList);
+</script>
+
+</body>
+</html>

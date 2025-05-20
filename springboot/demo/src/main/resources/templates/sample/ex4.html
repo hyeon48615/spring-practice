@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>링크</h1>
+<ul>
+    <li>'@' 로 링크 작성</li>
+    <li><a href="@{/hello}">링크클릭</a></li>
+    <li>쿼리스트링 : () 이용</li>
+    <li><a href="@{/hello(name='richard', age=16)}">링크클릭</a>  --> /hello?name=richard&age=16 </li>
+    <li>한글 등 utf 문자는 자동으로 URL 인코딩 처리가 됨</li>
+    <li>배열처럼 여러 개의 값도 자동으로 처리 --> 에디터에서는 에러로 보임</li>
+</ul>
+
+<h2>ht:href="@{경로}"</h2>
+<ul>
+    <li><a th:href="@{/sample/ex4}">ex4</a></li>
+    <li><a th:href="@{/sample/ex4(name='홍길동', age=20)}">ex4 링크파라미터</a></li>
+    <li><a th:href="@{/sample/ex4(msg=${ {'Hello','Spring','Boot'} }, age=20)}">ex4 링크파마리터 Array</a></li>
+</ul>
+
+
+</body>
+</html>

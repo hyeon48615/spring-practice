@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>제어문</h1>
+<h2>th:if 문</h2>
+<ul>
+    <li th:each="str, status:${lists}"
+        th:if="${status.odd}" th:text="${str}">
+    </li>
+</ul>
+<h2>th:unless 문</h2>
+<ul>
+    <li th:each="str, status:${lists}"
+        th:if="${status.odd}" th:text="${str}">
+    </li>
+    <li th:each="str, status:${lists}"
+        th:unless="${status.odd}" th:text="${str}">
+    </li>
+</ul>
+
+<h2>삼항연산자</h2>
+<div th:with="num1=${10}, num2=${20}, num3=30">
+    <h3 th:text="${num1 < 10} ? 'num1<10 : '+${num1}"></h3>
+    <h3 th:text="${num2 < 20} ? 'num2<20 : '+${num2} : 'num2>20 : '+${num2}"></h3>
+</div>
+
+<h2>th:switch ~ th:case</h2>
+<ul>
+   <li th:each="str, status:${lists}">
+       <th:block th:switch="${status.index % 5}">
+           <span th:case="0">status.index % 5 : 0</span>
+           <span th:case="1">status.index % 5 : 1</span>
+           <span th:case="*">status.index % 5 : *</span>
+       </th:block>
+   </li>
+</ul>
+</body>
+</html>

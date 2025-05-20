@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>인라인처리</h1>
+<ul>
+    <li>동일한 데이터를 다르게 출력해 주는 용도로 많이 사용</li>
+    <li>자바스크립트에 값 전달시 편리</li>
+</ul>
+
+<div th:text="${lists}"></div>
+<div th:text="${map}"></div>
+<div th:text="${dto}"></div>
+
+<script th:inline="javascript">
+    const lists = [[${lists}]];
+    const map = [[${map}]];
+    const dto = [[${dto}]];
+
+    document.write([[${lists}]]);
+    document.write([[${map}]]);
+    document.write([[${dto}]]);
+    // console.log(lists);
+    // console.log(map);
+    // console.log(dto);
+</script>
+
+<!--<script>-->
+<!--    const lists = ${lists};-->
+<!--    const map = ${map};-->
+<!--    const dto = ${dto};-->
+
+<!--    document.write(${lists});-->
+<!--    document.write("<br>");-->
+<!--    document.write(${map});-->
+<!--    document.write("<br>");-->
+<!--    document.write(${dto});-->
+<!--    // console.log(lists);-->
+<!--    // console.log(map);-->
+<!--    // console.log(dto);-->
+<!--</script>-->
+
+</body>
+</html>

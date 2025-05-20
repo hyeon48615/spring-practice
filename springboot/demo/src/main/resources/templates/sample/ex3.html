@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>반복문</h1>
+<ul>
+    <li>status 변수</li>
+    <li>th:each 처리시 반복문의 내부 상태값 출력</li>
+    <li>index / count / size / first / last / odd / even 등</li>
+    <li>변수명 : 사용자 지정이 가능</li>
+    <li>index -> 0부터 시작, count -> 1 부터 시작</li>
+</ul>
+
+<ul>
+    <li th:each="str, status:${lists}">
+        status.index : [[${status.index}]] - [[${str}]]
+    </li>
+</ul>
+
+
+</body>
+</html>
