@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<div layout:fragment="content">
+  <h1>조회 페이지</h1>
+  <div class="card mb-3">
+    <div class="card-body bg-light">
+      <div class="mb-3">
+        <p class="form-label">작성자</p>
+        <p class="form-control" th:text="${boardDTO.user_id}"></p>
+      </div>
+      <div class="mb-3">
+        <p class="form-label">제목</p>
+        <p class="form-control" th:text="${boardDTO.title}"></p>
+      </div>
+      <div class="mb-3">
+        <p class="form-label">내용</p>
+        <div class="form-control" th:text="${boardDTO.content}" style="height: 254px;"></div>
+      </div>
+      <div class="mb-3">
+        <p class="form-label">출력날짜</p>
+        <p class="form-control" th:text="${boardDTO.display_date}"></p>
+      </div>
+      <div class="text-muted small">
+        등록일: [[${#temporals.format(boardDTO.created_at, 'yyyy-MM-dd')}]]
+        <span th:if="${boardDTO.updated_at != null}" th:text="'| 수정일: ' + ${#temporals.format(boardDTO.updated_at, 'yyyy-MM-dd')}"></span>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between">
+    <a type="button" class="btn btn-secondary" th:href="|@{/board/list}?${pageRequestDTO.getLink()}|">목록</a>
+    <div th:if="${boardDTO.user_id == 'user1'}">
+      <form name="frmSubmit">
+        <input type="hidden" name="idx" th:value="${boardDTO.idx}"/>
+        <button type="button" class="btn btn-warning" id="btnModify">수정</button>
+        <button type="button" class="btn btn-danger" id="btnDelete">삭제</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+  const link = [[${pageRequestDTO.getLink()}]];
+  const btnModify = document.getElementById("btnModify");
+  if (btnModify) {
+    btnModify.addEventListener("click", () => {
+      const idx = document.querySelector("input[name='idx']").value;
+      location.href = `/board/modify?idx=${idx}&${link}`;
+    });
+  }
+
+  const btnDelete = document.getElementById("btnDelete");
+  if (btnDelete) {
+    btnDelete.addEventListener("click", () => {
+      const frm = document.querySelector("form[name='frmSubmit']");
+      frm.action = "/board/delete?" + link;
+      frm.method = "POST";
+      frm.submit();
+    });
+  }
+</script>
+</html>
