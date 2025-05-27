@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
+      layout:decorate="~{bbs/layout.html}">
+
+<head layout:fragment="header-content">
+    <meta charset="UTF-8">
+    <title>게시판 - 상세보기</title>
+</head>
+<body>
+
+<div layout:fragment="top-content">
+  <h1>게시판 - 상세보기</h1>
+</div>
+
+<div layout:fragment="content">
+  <table>
+    <tr>
+      <td>번호</td><td th:text="${dto.idx}"></td>
+      <td>작성자</td><td th:text="${dto.user_id}"></td>
+      <td>조회수</td><td th:text="${dto.read_cnt}"></td>
+    </tr>
+    <tr>
+      <td>날짜</td><td colspan="2" th:text="${dto.display_date}"></td>
+      <td>작성일</td><td colspan="2" th:text="${#temporals.format(dto.reg_date, 'yyyy-MM-dd HH:mm')}"></td>
+    </tr>
+    <tr>
+      <td>제목</td><td colspan="5" th:text="${dto.title}"></td>
+    </tr>
+    <tr>
+      <td>내용</td><td colspan="5" th:text="${dto.content}"></td>
+    </tr>
+  </table>
+</div>
+
+<div layout:fragment="page-content">
+  <table>
+    <tr>
+      <td>
+        <button id="btnList">목록</button>
+        <button id="btnModify">수정</button>
+        <button id="btnDelete">삭제</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div >
+
+</div>
+<div layout:fragment="footer-content">
+  <h3>FOOTER 영역</h3>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+  const btnList = document.getElementById("btnList");
+  const btnModify = document.getElementById("btnModify");
+  const btnDelete = document.getElementById("btnDelete");
+  btnList.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href=`/bbs/list?page_no=[[${page_no}]]&page_size=[[${page_size}]]`;
+  }, false);
+
+  btnModify.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href=`/bbs/modify?idx=[[${dto.idx}]]&page_no=[[${page_no}]]&page_size=[[${page_size}]]`;
+  }, false);
+
+  btnDelete.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href=`/bbs/delete?idx=[[${dto.idx}]]&page_no=[[${page_no}]]&page_size=[[${page_size}]]`;
+  }, false);
+</script>
+
+</body>
+</html>

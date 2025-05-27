@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{bbs2/layout/layout.html}">
+
+<head>
+    <title>Board Read</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    게시판 - 조회
+                </div>
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">번호</span>
+                        <input type="text" class="form-control" th:value="${dto.idx}" readonly>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">제목</span>
+                        <input type="text" class="form-control" th:value="${dto.title}" readonly>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">내용</span>
+                        <textarea class="form-control col-sm-5" rows="5" readonly>[[${dto.content}]]</textarea>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">작성자</span>
+                        <input type="text" class="form-control" th:value="${dto.user_id}" readonly>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">등록일</span>
+                        <input type="text" class="form-control" th:value="${#temporals.format(dto.created_at, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">수정일</span>
+                        <input type="text" class="form-control" th:value="${#temporals.format(dto.updated_at, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                    </div>
+
+                    <div class="my-4">
+                        <div class="float-end" th:with="link_params = ${link_params}">
+                            <a th:href="|@{/bbs/list}?${link_params}|" class="text-decoration-none">
+                                <button type="button" class="btn btn-primary">목록</button>
+                            </a>
+                            <a th:href="|@{/bbs/modify(idx=${dto.idx})}&${link_params}|" class="text-decoration-none">
+                                <button type="button" class="btn btn-secondary">수정</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="my-4 ">
+                <button class="btn btn-info addReplyBtn">댓글추가</button>
+            </div>
+            <ul class="list-group replyList">
+            </ul>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col d-flex justify-content-center">
+            <ul class="pagination replyPaging">
+            </ul>
+        </div>
+    </div>
+
+    <!-- regist modal -->
+    <div class="modal registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">댓글 등록</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">댓글</span>
+                        <input type="text" class="form-control replyText" >
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">작성자</span>
+                        <input type="text" class="form-control replyer" >
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary registerBtn">댓글등록</button>
+                    <button type="button" class="btn btn-outline-dark closeRegisterBtn" >Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modify modal -->
+    <div class="modal modifyModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title replyHeader"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Reply Text</span>
+                        <input type="text" class="form-control modifyText" >
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info modifyBtn">수정</button>
+                    <button type="button" class="btn btn-danger removeBtn">삭제</button>
+                    <button type="button" class="btn btn-outline-dark closeModifyBtn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/bbs2/js/bbs_reply.js"></script>
+</div>
+
+
+
+<script layout:fragment="script" th:inline="javascript">
+    //----------------------------------------------------
+    // 예제
+    // function fetchData() {
+    //     return new Promise(resolve => {
+    //         setTimeout(() => resolve("데이터 수신 완료"), 3000);
+    //     });
+    // }
+    // async function getData() {
+    //     console.log("요청 시작");
+    //     const result = await fetchData();
+    //     console.log(result);
+    // }
+    // getData();
+    //----------------------------------------------------
+    //----------------------------------------------------
+    //전체 흐름 및 적용 예제
+    // function delay(ms) {
+    //     return new Promise(resolve => setTimeout(resolve, ms));
+    // }
+    // async function process() {
+    //     console.log("작업 시작");
+    //     await delay(1000);
+    //     console.log("1초 후 실행");
+    //     await delay(1000);
+    //     console.log("또 1초 후 실행");
+    // }
+    // process();
+    //----------------------------------------------------
+
+    const bbs_idx = [[${dto.idx}]];
+    console.log("bbs_idx : ", bbs_idx);
+
+    // get1(idx)
+    //     .then(result => {console.log(result)})
+    //     .catch(e => {console.log(e)});
+
+
+    const replyList = document.querySelector('.replyList') //댓글 목록 DOM
+    const replyPaging = document.querySelector('.replyPaging') //페이지 목록 DOM
+
+    function printList(dtoList){ //댓글 목록 출력
+        let str = '';
+
+        if(dtoList && dtoList.length > 0){
+
+            for (const dto of dtoList) {
+
+                str += `<li class="list-group-item d-flex replyItem">
+                      <span class="col-2">${dto.idx}</span>
+                      <span class="col-6" data-rno="${dto.idx}">${dto.reply_title}</span>
+                      <span class="col-2">${dto.reply_user_id}</span>
+                      <span class="col-2">${dto.created_at} </span>
+                    </li>`
+            }
+        }
+        replyList.innerHTML = str
+    }
+
+    function printPages(data){ //페이지 목록 출력
+        if (data.total_count < 1) return;
+
+        //pagination
+        let pageStr = '';
+
+        if(data.prev_page_flag) {
+            pageStr +=`<li class="page-item"><a class="page-link" data-page="${data.page_block_start-1}">PREV</a></li>`
+        }
+
+        for(let i = data.page_block_start; i <= data.page_block_end; i++){
+            pageStr +=`<li class="page-item ${i == data.page_no?"active":""} "><a class="page-link" data-page="${i}">${i}</a></li>`
+        }
+
+        if(data.next_page_flag) {
+            pageStr +=`<li class="page-item"><a class="page-link" data-page="${data.page_block_end +1}">NEXT</a></li>`
+        }
+        replyPaging.innerHTML = pageStr
+    }
+
+    function printReplies(page, size, goLast){
+        getReplyList({bbs_idx, page, size, goLast}).then(
+            data => {
+                printList(data.dtoList) //목록 처리
+                printPages(data) //페이지 처리
+            }
+        ).catch(e => {
+            console.error(e)
+        })
+    }
+
+    printReplies(1, 10, true)
+
+    //댓글 등록 모달
+    const registerModal = new bootstrap.Modal(document.querySelector(".registerModal"))
+    //registerModel
+    const registerBtn = document.querySelector(".registerBtn")
+    const replyText = document.querySelector(".replyText")
+    const replyer = document.querySelector(".replyer")
+    const closeRegisterBtn = document.querySelector(".closeRegisterBtn")
+
+    document.querySelector(".addReplyBtn").addEventListener("click", function (e){
+        registerModal.show()
+    },false)
+
+    closeRegisterBtn.addEventListener("click", function (e){
+        registerModal.hide()
+    },false)
+
+    registerBtn.addEventListener("click", function(e){
+        const replyObj = {
+            board_idx: bbs_idx,
+            reply_title:replyText.value,
+            reply_user_id:replyer.value
+        };
+
+        addReply(replyObj).then(result => {
+            registerModal.hide()
+            replyText.value = ''
+            replyer.value =''
+            printReplies(1, 10, true) //댓글 목록 갱신
+        }).catch(e => {
+            console.error("addReply exception: ", e);
+        })
+    }, false);
+
+    let page = 1
+    let size = 10
+
+    replyPaging.addEventListener("click", function (e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = e.target
+
+        if(!target || target.tagName != 'A'){
+            return
+        }
+
+        const pageNum = target.getAttribute("data-page")
+        page = pageNum
+        printReplies(page, size)
+
+    },false)
+
+
+    //modifyModal
+    const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"))
+
+    const replyHeader = document.querySelector(".replyHeader")
+    const modifyText = document.querySelector(".modifyText")
+    const modifyBtn = document.querySelector(".modifyBtn")
+    const removeBtn = document.querySelector(".removeBtn")
+    const closeModifyBtn = document.querySelector(".closeModifyBtn")
+
+
+    replyList.addEventListener("click", function (e){
+
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = e.target
+
+        if(!target || target.tagName != 'SPAN'){
+            return
+        }
+
+        const rno = target.getAttribute("data-rno")
+
+        if(!rno){
+            return
+        }
+
+        getReply(rno).then(reply => { //댓글의 내용을 모달창에 채워서 보여주는
+
+            console.log(reply)
+            replyHeader.innerHTML = reply.idx
+            modifyText.value = reply.reply_title
+            modifyModal.show()
+
+        }).catch(e => alert('error'))
+
+    },false)
+
+
+    modifyBtn.addEventListener("click", function(e) {
+
+        const replyObj = {
+            bno:bno,
+            rno:replyHeader.innerHTML,
+            replyText:modifyText.value}
+
+        modifyReply(replyObj).then(result => {
+            alert(result.rno+' 댓글이 수정되었습니다.')
+            replyText.value = ''
+            modifyModal.hide()
+            printReplies(page, size)
+
+        }).catch(e => {
+            console.log(e)
+        })
+    },false)
+
+    closeModifyBtn.addEventListener("click", function(e){
+
+        modifyModal.hide()
+
+    }, false)
+
+    removeBtn.addEventListener("click", function(e) {
+
+        removeReply(replyHeader.innerHTML).then(result => {
+
+            alert(result.rno +' 댓글이 삭제되었습니다.')
+            replyText.value = ''
+            modifyModal.hide()
+
+            page = 1 // 이 부분이 없다면 원래 페이지로
+
+            printReplies(page, size)
+
+        }).catch(e => {
+            console.log(e)
+        })
+    },false)
+
+
+
+</script>

@@ -63,11 +63,12 @@ public class BoardService implements BoardServiceIf {
         List<BoardDTO> list = result.getContent().stream()
                 .map(board -> modelMapper.map(board, BoardDTO.class))
                 .collect(Collectors.toList());
+        long totalCount = result.getTotalElements();
 
         return PageResponseDTO.<BoardDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .list(list)
-                .total((int)result.getTotalElements())
+                .total(totalCount)
                 .build();
     }
 
@@ -79,14 +80,15 @@ public class BoardService implements BoardServiceIf {
 
         Page<BoardEntity> result = boardRepository.search2(pageable, categories, search_word);
 
-        List<BoardEntity> list = result.getContent();
-        int totalCount = (int)result.getTotalElements();
+        List<BoardEntity> entityList = result.getContent();
+        List<BoardDTO> list = entityList.stream()
+                .map(board -> modelMapper.map(board, BoardDTO.class))
+                .collect(Collectors.toList());
+        long totalCount = result.getTotalElements();
 
         return PageResponseDTO.<BoardDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
-                .list(list.stream()
-                        .map(board -> modelMapper.map(board, BoardDTO.class))
-                        .collect(Collectors.toList()))
+                .list(list)
                 .total(totalCount)
                 .build();
     }

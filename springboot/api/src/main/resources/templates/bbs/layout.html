@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout">
+
+<head layout:fragment="header-content">
+    <meta charset="UTF-8">
+    <title>레이아웃</title>
+    <script type="text/javascript" src="https://high.milkt.co.kr/Js/Common.js"></script>
+</head>
+
+<body>
+
+<div layout:fragment="top-content">
+    <p>LAYOUT TOP 메뉴 영역</p>
+</div>
+
+<div layout:fragment="content">
+    <p>LAYOUT CONTENT 영역</p>
+</div>
+
+<div layout:fragment="page-content">
+    <p>LAYOUT 페이지 영역</p>
+</div>
+
+<div layout:fragment="footer-content">
+    <p>LAYOUT FOOTER 메뉴 영역</p>
+</div>
+
+<th:block layout:fragment="script" th:inline="javascript">
+
+</th:block>
+
+</body>
+</html>

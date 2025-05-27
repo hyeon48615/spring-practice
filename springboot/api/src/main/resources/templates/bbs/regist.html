@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout">
+
+<head layout:fragment="header-content">
+    <meta charset="UTF-8">
+    <title>게시판 - 등록</title>
+</head>
+<body>
+
+<div layout:fragment="top-content">
+  <h1>게시판 - 등록</h1>
+</div>
+
+<div layout:fragment="content">
+  <form name="frmRegist" id="frmRegist" action="/bbs/regsit" method="post">
+  <table>
+    <tr>
+      <td>작성자</td>
+      <td>
+        <input type="text" name="user_id" id="user_id" value="" maxlength="20" placeholder="아이디를 입력하세요" />
+      </td>
+    </tr>
+    <tr>
+      <td>날짜</td>
+      <td>
+        <input type="date" name="display_date" id="display_date" value="" maxlength="10" placeholder="출력 날짜를 선택하세요" />
+      </td>
+    </tr>
+    <tr>
+      <td>제목</td>
+      <td>
+        <input type="text" name="title" id="title" value="" maxlength="200" placeholder="제목을 200자 이내로 입력하세요" />
+      </td>
+    </tr>
+    <tr>
+      <td>내용</td>
+      <td>
+        <textarea name="content" id="content" cols="40" rows="4" style="resize: none"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <button id="btnList">목록</button>
+        <input type="submit" id="btnRegist" value="등록" />
+        <input type="reset" id="btnCancel" value="취소" />
+      </td>
+    </tr>
+  </table>
+  </form>
+</div>
+
+<div layout:fragment="page-content">
+</div>
+
+<div layout:fragment="footer-content">
+  <h3>FOOTER 영역</h3>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+  const btnList = document.getElementById("btnList");
+  const btnRegist = document.getElementById("btnRegist");
+  const btnCancel = document.getElementById("btnCancel");
+  const frmForm = document.getElementById("frmRegist");
+  btnList.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href=`/bbs/list?page_no=[[${page_no}]]&page_size=[[${page_size}]]`;
+  }, false);
+
+  btnRegist.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    let user_id = frmForm.user_id;
+    let display_date = frmForm.display_date;
+    let title = frmForm.title;
+    let content = frmForm.content;
+    if (!user_id.value) {
+      alert("아이디를 입력하세요.");
+      user_id.focus();
+      return;
+    }
+    if (!display_date.value) {
+      alert("노출 날짜를 입력하세요.");
+      display_date.focus();
+      return;
+    }
+    if (!title.value) {
+      alert("제목을 입력하세요.");
+      title.focus();
+      return;
+    }
+    if (!content.value) {
+      alert("글내용을 입력하세요.");
+      content.focus();
+      return;
+    }
+
+    frmForm.action = "/bbs/regist";
+    frmForm.method = "POST";
+    frmForm.submit();
+  }, false);
+
+  btnCancel.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    frmForm.reset();
+  }, false);
+</script>
+
+</body>
+</html>

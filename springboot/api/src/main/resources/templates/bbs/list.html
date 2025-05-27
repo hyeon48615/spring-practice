@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
+      layout:decorate="~{bbs/layout.html}">
+
+<head layout:fragment="header-content">
+    <meta charset="UTF-8">
+    <title>게시판 - 목록</title>
+</head>
+<body>
+
+<div layout:fragment="top-content">
+  <h1>게시판 - 목록</h1>
+</div>
+
+<div layout:fragment="content">
+  <table>
+    <tr>
+      <td>번호</td>
+      <td>제목</td>
+      <td>작성자</td>
+      <td>조회수</td>
+      <td>날짜</td>
+      <td>작성일</td>
+    </tr>
+    <tr th:each="dto, status:${dtoList}">
+      <td th:text="${dto.idx}"></td>
+      <td><a th:href="@{/bbs/view(idx=${dto.idx}, page_no=${page_no}, page_size=10)}" th:text="${dto.title}"></a> </td>
+      <td th:text="${dto.user_id}"></td>
+      <td th:text="${dto.read_cnt}"></td>
+      <td th:text="${dto.display_date}"></td>
+      <td th:text="${#temporals.format(dto.reg_date, 'yyyy-MM-dd HH:mm')}"></td>
+    </tr>
+  </table>
+</div>
+
+<div layout:fragment="page-content">
+  <table>
+    <tr>
+      <td>
+        <!-- 첫페이지 링크 -->
+        <a th:href="@{/bbs/list(page_no=1, page_size=10)}"><< </a>
+        <!-- 이전 10페이지 링크 -->
+        <a th:href="${page_no > 1} ? '#' : @{/bbs/list(page_no=${page_no-1}, page_size=10)}"> < </a>
+        <!-- 페이지 링크 -->
+        <span th:each="page, status:${#numbers.sequence(1, 10)}">
+          <span th:if="${page_no == page}" th:text="${'&nbsp;'+page}"></span>
+          <span th:unless="${page_no == page}">
+            &nbsp;<a th:href="@{/bbs/list(page_no=${page}, page_size=10)}" th:text="${page}"></a>
+          </span>
+        </span>
+        <!-- 다음 10페이지 링크 -->
+        <a th:href="${page_no > 20} ? '#' : @{/bbs/list(page_no=${page_no+1}, page_size=10)}"> ></a>
+        <!-- 마지막페이지 링크 -->
+        <a th:href="${page_no.equals(10)} ? '#' : @{/bbs/list(page_no=10, page_size=10)}"> >></a>
+
+      </td>
+    </tr>
+  </table>
+
+  <table>
+    <tr>
+      <td>
+        <button id="btnRegist">등록</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div layout:fragment="footer-content">
+  <h3>푸터 영역</h3>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+  const btnRegist = document.getElementById("btnRegist");  const btnModify = document.getElementById("btnModify");
+  btnRegist.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href=`/bbs/regist?page_no=[[${page_no}]]&page_size=[[${page_size}]]`;
+  }, false);
+</script>
+
+</body>
+</html>
