@@ -3,8 +3,8 @@ package net.fullstack.api.controller;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.fullstack.api.dto.BbsDTO;
-import net.fullstack.api.service.BbsService;
+import net.fullstack.api.dto.BoardDTO;
+import net.fullstack.api.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/bbs")
 public class BbsController {
-    private final BbsService bbsService;
+    private final BoardService boardService;
 
     // 게시판 목록
     @RequestMapping("/list")
@@ -28,7 +28,7 @@ public class BbsController {
             @RequestParam(name="page_size", required = false, defaultValue = "10") int page_size,
             Model model
     ) {
-        List<BbsDTO> dtoList = bbsService.bbsList();
+        List<BoardDTO> dtoList = boardService.bbsList();
 
         model.addAttribute("page_no", page_no);
         model.addAttribute("page_size", page_size);
@@ -44,7 +44,7 @@ public class BbsController {
             @RequestParam(name="page_size", required = false, defaultValue = "10") int page_size,
             Model model
     ) {
-        BbsDTO dto = bbsService.getView(idx);
+        BoardDTO dto = boardService.getView(idx);
         model.addAttribute("idx", idx);
         model.addAttribute("page_no", page_no);
         model.addAttribute("page_size", page_size);
@@ -74,13 +74,13 @@ public class BbsController {
             @RequestParam(name="content", required = true) String content,
             Model model
     ) {
-        BbsDTO dto = BbsDTO.builder()
+        BoardDTO dto = BoardDTO.builder()
                 .user_id(user_id)
                 .display_date(display_date)
                 .title(title)
                 .content(content)
                 .build();
-        long rtnResult = bbsService.bbsRegist(dto);
+        long rtnResult = boardService.bbsRegist(dto);
         if(rtnResult > 0) {
             return "redirect:/bbs/list";
         } else {

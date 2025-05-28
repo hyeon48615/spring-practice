@@ -1,7 +1,7 @@
 package net.fullstack.api.repository;
 
 import lombok.extern.log4j.Log4j2;
-import net.fullstack.api.domain.BbsEntity;
+import net.fullstack.api.domain.BoardEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,18 +10,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
 @Log4j2
 @SpringBootTest
-public class BbsRepositoryTests {
+public class BoardRepositoryTests {
     @Autowired
-    private BbsRepository bbsRepository;
+    private BoardRepository boardRepository;
 
     @Test
     public void testGetNow() {
@@ -36,13 +33,13 @@ public class BbsRepositoryTests {
         log.info("========================================");
         IntStream.rangeClosed(1, 100).forEach(i -> {
             String displayDate = LocalDate.of(2025, 5, (i % 10 == 0 ? 10 : i % 10)).toString();
-            BbsEntity bbsEntity = BbsEntity.builder()
+            BoardEntity bbsEntity = BoardEntity.builder()
                     .title("테스트 제목 " + i)
                     .content("테스트 내용 " + i)
                     .user_id("user" + (i%10==0?1:2))
                     .display_date(displayDate)
                     .build();
-            BbsEntity result = bbsRepository.save(bbsEntity);
+            BoardEntity result = boardRepository.save(bbsEntity);
             log.info("testBbsResgist : {}", result.toString());
         });
 
@@ -123,7 +120,7 @@ public class BbsRepositoryTests {
     public void testSearch1() {
         log.info("======================================");
         Pageable pageable = PageRequest.of(0, 10, Sort.by("idx").descending());
-        bbsRepository.search1(pageable);
+        boardRepository.search1(pageable);
         log.info("=====================================");
     }
 
@@ -133,8 +130,8 @@ public class BbsRepositoryTests {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("idx").descending());
         String[] categories = {"title", "content"};
         String search_word = "5";
-        Page<BbsEntity> result = bbsRepository.search2(pageable, categories, search_word);
-        List<BbsEntity> bbsList = result.getContent();
+        Page<BoardEntity> result = boardRepository.search2(pageable, categories, search_word);
+        List<BoardEntity> bbsList = result.getContent();
         long total_cnt = result.getTotalElements();
 
         bbsList.forEach(bbsEntity -> {

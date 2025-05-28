@@ -3,9 +3,6 @@ package net.fullstack.api.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -20,14 +17,14 @@ import java.time.LocalDateTime;
     name="tbl_board_reply",
     indexes = {@Index(name="IDX_tbl_board_reply_board_idx", columnList = "board_idx")}
 )
-public class BbsReplyEntity extends BbsBaseEntity {
+public class BoardReplyEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private long idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private BbsEntity board;
+    private BoardEntity board;
 
     @Column(columnDefinition = "VARCHAR(20) NOT NULL COMMENT '아이디' COLLATE 'utf8mb4_unicode_ci'")
     private String reply_user_id;

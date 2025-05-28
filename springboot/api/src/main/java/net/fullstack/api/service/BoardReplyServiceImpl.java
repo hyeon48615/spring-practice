@@ -2,12 +2,12 @@ package net.fullstack.api.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.fullstack.api.domain.BbsEntity;
-import net.fullstack.api.domain.BbsReplyEntity;
-import net.fullstack.api.dto.BbsReplyDTO;
+import net.fullstack.api.domain.BoardEntity;
+import net.fullstack.api.domain.BoardReplyEntity;
+import net.fullstack.api.dto.BoardReplyDTO;
 import net.fullstack.api.dto.PageRequestDTO;
 import net.fullstack.api.dto.PageResponseDTO;
-import net.fullstack.api.repository.bbs.BbsReplyRepository;
+import net.fullstack.api.repository.bbs.BoardReplyRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,19 +22,19 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class BbsReplyServiceImpl implements BbsReplyService {
+public class BoardReplyServiceImpl implements BoardReplyService {
     private final ModelMapper modelMapper;
-    private final BbsReplyRepository bbsReplyRepository;
+    private final BoardReplyRepository boardReplyRepository;
 
     /**
-     * @param bbsReplyDTO
+     * @param boardReplyDTO
      * @return
      */
     @Override
-    public long bbsReplyRegist(BbsReplyDTO bbsReplyDTO) {
-        BbsReplyEntity bbsReplyEntity = modelMapper.map(bbsReplyDTO, BbsReplyEntity.class);
-        bbsReplyEntity.setBoard(BbsEntity.builder().idx(bbsReplyDTO.getBoard_idx()).build());
-        BbsReplyEntity savedResult = bbsReplyRepository.save(bbsReplyEntity);
+    public long bbsReplyRegist(BoardReplyDTO boardReplyDTO) {
+        BoardReplyEntity bbsReplyEntity = modelMapper.map(boardReplyDTO, BoardReplyEntity.class);
+        bbsReplyEntity.setBoard(BoardEntity.builder().idx(boardReplyDTO.getBoard_idx()).build());
+        BoardReplyEntity savedResult = boardReplyRepository.save(bbsReplyEntity);
         long rtnResult = savedResult.getIdx();
         return rtnResult;
     }
@@ -45,27 +45,27 @@ public class BbsReplyServiceImpl implements BbsReplyService {
      * @return
      */
     @Override
-    public List<BbsReplyDTO> bbsReplyList(Long bbs_idx, Pageable pageable) {
-        Page<BbsReplyEntity> resultEntity = bbsReplyRepository.list(bbs_idx, pageable);
-        List<BbsReplyDTO> bbsReplyDTOList = resultEntity.getContent()
+    public List<BoardReplyDTO> bbsReplyList(Long bbs_idx, Pageable pageable) {
+        Page<BoardReplyEntity> resultEntity = boardReplyRepository.list(bbs_idx, pageable);
+        List<BoardReplyDTO> boardReplyDTOList = resultEntity.getContent()
                 .stream()
-                .map(reply->modelMapper.map(reply, BbsReplyDTO.class))
+                .map(reply->modelMapper.map(reply, BoardReplyDTO.class))
                 .collect(Collectors.toList());
 
-        return bbsReplyDTOList;
+        return boardReplyDTOList;
     }
 
     @Override
-    public PageResponseDTO<BbsReplyDTO> bbsReplyList(Long bbs_idx, PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<BoardReplyDTO> bbsReplyList(Long bbs_idx, PageRequestDTO pageRequestDTO) {
         Pageable pageable = pageRequestDTO.getPageable("idx");
 
-        Page<BbsReplyEntity> resultEntity = bbsReplyRepository.list(bbs_idx, pageable);
-        List<BbsReplyDTO> dtoList = resultEntity.getContent().stream()
-                .map(entity -> modelMapper.map(entity, BbsReplyDTO.class))
+        Page<BoardReplyEntity> resultEntity = boardReplyRepository.list(bbs_idx, pageable);
+        List<BoardReplyDTO> dtoList = resultEntity.getContent().stream()
+                .map(entity -> modelMapper.map(entity, BoardReplyDTO.class))
                 .collect(Collectors.toList());
         long totalCount = resultEntity.getTotalElements();
 
-        return PageResponseDTO.<BbsReplyDTO>withAll()
+        return PageResponseDTO.<BoardReplyDTO>withAll()
                 .reqDTO(pageRequestDTO)
                 .totalCount(totalCount)
                 .dtoList(dtoList)
@@ -78,11 +78,11 @@ public class BbsReplyServiceImpl implements BbsReplyService {
      */
 
     @Override
-    public BbsReplyDTO bbsReplyView(Long idx) {
-        BbsReplyEntity result = bbsReplyRepository.getById(idx);
+    public BoardReplyDTO bbsReplyView(Long idx) {
+        BoardReplyEntity result = boardReplyRepository.getById(idx);
         //log.info("result: " + result);
 
-        BbsReplyDTO replyDTO = modelMapper.map(result, BbsReplyDTO.class);
+        BoardReplyDTO replyDTO = modelMapper.map(result, BoardReplyDTO.class);
         if ( result.getBoard() != null ) {
             //log.info("result.getBoard(): " + result.getBoard());
             replyDTO.setBoard_idx(result.getBoard().getIdx());
@@ -94,13 +94,13 @@ public class BbsReplyServiceImpl implements BbsReplyService {
      * @param replyDTO
      */
     @Override
-    public void bbsReplyModify(BbsReplyDTO replyDTO) {
-        Optional<BbsReplyEntity> replyOptional = bbsReplyRepository.findById(replyDTO.getIdx());
+    public void bbsReplyModify(BoardReplyDTO replyDTO) {
+        Optional<BoardReplyEntity> replyOptional = boardReplyRepository.findById(replyDTO.getIdx());
         if (replyOptional.isPresent()) {
-            BbsReplyEntity replyEntity = replyOptional.get();
+            BoardReplyEntity replyEntity = replyOptional.get();
             replyEntity.modify(replyDTO.getReply_title(), replyDTO.getReply_content());
             log.info("BbsReplyServiceImpl >> bbsReplyModify >> replyEntity : {}", replyEntity);
-            bbsReplyRepository.save(replyEntity);
+            boardReplyRepository.save(replyEntity);
         }
     }
 
@@ -110,6 +110,6 @@ public class BbsReplyServiceImpl implements BbsReplyService {
     @Override
     public void bbsReplyDelete(Long idx) {
         log.info("BbsReplyServiceImpl >> bbsReplyDelete >> idx : {}", idx);
-        bbsReplyRepository.deleteById(idx);
+        boardReplyRepository.deleteById(idx);
     }
 }

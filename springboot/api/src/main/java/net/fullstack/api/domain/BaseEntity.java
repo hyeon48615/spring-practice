@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @SuperBuilder(toBuilder = true) // 상위 클래스의 프로퍼티도 빌더에 포함 --> 클래스명.builder().......build();
-public abstract class BbsBaseEntity {
+public class BaseEntity {
     @CreatedDate
     @Column(name="created_at", nullable = false, insertable = true, updatable = false,
             columnDefinition = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일'")

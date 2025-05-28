@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Builder
-public class BbsDTO {
+public class BoardDTO {
     private Long idx;
     @NotBlank(message = "아이디를 입력해주세요.")
     private String user_id;

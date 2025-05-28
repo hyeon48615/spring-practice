@@ -1,8 +1,8 @@
 package net.fullstack.api.repository;
 
 import lombok.extern.log4j.Log4j2;
-import net.fullstack.api.domain.BbsReplyEntity;
-import net.fullstack.api.repository.bbs.BbsReplyRepository;
+import net.fullstack.api.domain.BoardReplyEntity;
+import net.fullstack.api.repository.bbs.BoardReplyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,9 +13,9 @@ import org.springframework.data.domain.Sort;
 
 @Log4j2
 @SpringBootTest
-public class BbsReplyRepositoryTests {
+public class BoardReplyRepositoryTests {
     @Autowired
-    private BbsReplyRepository bbsReplyRepository;
+    private BoardReplyRepository boardReplyRepository;
 
     @Test
     public void testBbsReplyRegist(){
@@ -42,7 +42,7 @@ public class BbsReplyRepositoryTests {
         log.info("BbsReplyServiceImplTests >> testBbsReplyList START");
         long bbs_idx = 1L;
         Pageable pageable = PageRequest.of(0, 10, Sort.by("idx").descending());
-        Page<BbsReplyEntity> result = bbsReplyRepository.list(bbs_idx, pageable);
+        Page<BoardReplyEntity> result = boardReplyRepository.list(bbs_idx, pageable);
         log.info(result);
         log.info("BbsReplyServiceImplTests >> testBbsReplyList END");
         log.info("============================================");

@@ -1,7 +1,7 @@
 package net.fullstack.api.service;
 
 import lombok.extern.log4j.Log4j2;
-import net.fullstack.api.dto.BbsDTO;
+import net.fullstack.api.dto.BoardDTO;
 import net.fullstack.api.dto.PageRequestDTO;
 import net.fullstack.api.dto.PageResponseDTO;
 import org.junit.jupiter.api.Test;
@@ -16,11 +16,11 @@ import java.util.List;
 
 @Log4j2
 @SpringBootTest
-public class BbsServiceTests {
+public class BoardServiceTests {
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
-    private BbsService bbsService;
+    private BoardService boardService;
 
     @Test
     public void testGetTotalCount() {
@@ -41,7 +41,7 @@ public class BbsServiceTests {
                 .search_word("테스트")
                 .linkParams("")
                 .build();
-        List<BbsDTO> dtoList = bbsService.bbsList(pageRequestDTO);
+        List<BoardDTO> dtoList = boardService.bbsList(pageRequestDTO);
         dtoList.forEach(dto -> {
             log.info("dto : {}", dto.toString());
         });
@@ -108,7 +108,7 @@ public class BbsServiceTests {
                 .search_word("테스트")
                 .linkParams("")
                 .build();
-        PageResponseDTO<BbsDTO> resDTO = bbsService.boardList(reqDTO);
+        PageResponseDTO<BoardDTO> resDTO = boardService.boardList(reqDTO);
         log.info("resDTO = {}", resDTO);
         log.info("BbsServiceTests >> testBoardList END");
         log.info("========================================");

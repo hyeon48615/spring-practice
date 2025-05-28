@@ -1,7 +1,7 @@
 package net.fullstack.api.service;
 
 import lombok.extern.log4j.Log4j2;
-import net.fullstack.api.dto.BbsReplyDTO;
+import net.fullstack.api.dto.BoardReplyDTO;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class BbsReplyServiceTests {
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
-    private BbsReplyService replyService;
+    private BoardReplyService replyService;
 
     @Test
     public void testBbsReplyRegist(){
@@ -57,7 +57,7 @@ public class BbsReplyServiceTests {
 
         long bbs_idx = 1L;
         Pageable pageable = PageRequest.of(0, 10, Sort.by("idx").descending());
-        List<BbsReplyDTO> replyDTOList = replyService.bbsReplyList(bbs_idx, pageable);
+        List<BoardReplyDTO> replyDTOList = replyService.bbsReplyList(bbs_idx, pageable);
         log.info("BbsReplyServiceImplTests >> testBbsReplyList >> replyDTOList : {}", replyDTOList);
         log.info("BbsReplyServiceImplTests >> testBbsReplyList END");
         log.info("============================================");
@@ -68,7 +68,7 @@ public class BbsReplyServiceTests {
         log.info("===========================================");
         log.info("BbsReplyServiceImplTests >> testBbsReplyView START");
         long idx = 1L;
-        BbsReplyDTO replyDTO = replyService.bbsReplyView(idx);
+        BoardReplyDTO replyDTO = replyService.bbsReplyView(idx);
         log.info(replyDTO);
         log.info("BbsReplyServiceImplTests >> testBbsReplyView END");
         log.info("============================================");
@@ -79,7 +79,7 @@ public class BbsReplyServiceTests {
         log.info("============================================");
         log.info("BbsReplyServiceImplTests >> testBbsReplyModify START");
         long idx = 13L;
-        BbsReplyDTO replyDTO = BbsReplyDTO.builder()
+        BoardReplyDTO replyDTO = BoardReplyDTO.builder()
                 .idx(idx)
                 .board_idx(10)
                 .reply_title("서비스 게시판 제목 수정")
