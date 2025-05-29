@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: security2
+  security:
+    user:
+      name: test
+      password: 1234
+      roles: USER
